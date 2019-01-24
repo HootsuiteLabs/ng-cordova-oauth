@@ -27,14 +27,20 @@
               redirect_uri = options.redirect_uri;
             }
           }
-          var browserRef = window.cordova.InAppBrowser.open('https://www.linkedin.com/uas/oauth2/authorization?client_id=' + clientId + '&redirect_uri=' + redirect_uri + '&scope=' + appScope.join(" ") + '&response_type=code&state=' + state, '_blank', 'location=no,clearsessioncache=yes,clearcache=yes,beforeload=yes');
-          browserRef.addEventListener('beforeload', function(event, callback) {
-            if((event.url).startsWith("https://www.linkedin.com") || (event.url).indexOf(redirect_uri) === 0) {
-              callback(event.url);
-            } else {
-              console.log(event.url + " are not loaded.");
-            }
-          });
+          var customOptions = 'location=no,clearsessioncache=yes,clearcache=yes';
+          if(window.cordova.platformId === "android"){
+            customOptions = customOptions + ',beforeload=yes';
+          }
+          var browserRef = window.cordova.InAppBrowser.open('https://www.linkedin.com/uas/oauth2/authorization?client_id=' + clientId + '&redirect_uri=' + redirect_uri + '&scope=' + appScope.join(" ") + '&response_type=code&state=' + state, '_blank', customOptions);
+          if(window.cordova.platformId === "android") {
+            browserRef.addEventListener('beforeload', function(event, callback) {
+              if((event.url).startsWith("https://www.linkedin.com") || (event.url).indexOf(redirect_uri) === 0) {
+                callback(event.url);
+              } else {
+                console.log(event.url + " are not loaded.");
+              }
+            });
+          }
           browserRef.addEventListener('loadstart', function(event) {
             if((event.url).indexOf(redirect_uri) === 0) {
               try {
