@@ -32,10 +32,10 @@
               var requestToken = (event.url).split("code=")[1];
 
               $http({method: "post", headers: {'Content-Type': 'application/x-www-form-urlencoded'}, url: "https://app.box.com/api/oauth2/token", data: "client_id=" + clientId + "&client_secret=" + clientSecret + "&redirect_uri=" + redirect_uri + "&grant_type=authorization_code" + "&code=" + requestToken })
-                .success(function(data) {
+                .then(function(data) {
                   deferred.resolve(data);
                 })
-                .error(function(data, status) {
+                .catch(function(data, status) {
                   deferred.reject("Problem authenticating");
                 })
                 .finally(function() {

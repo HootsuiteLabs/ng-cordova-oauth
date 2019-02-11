@@ -32,10 +32,10 @@
               var requestToken = (event.url).split("code=")[1];
               $http.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
               $http({method: "post", url: "https://www.strava.com/oauth/token", data: "client_id=" + clientId + "&client_secret=" + clientSecret + "&code=" + requestToken })
-              .success(function(data) {
+              .then(function(data) {
                 deferred.resolve(data);
               })
-              .error(function(data, status) {
+              .catch(function(data, status) {
                 deferred.reject("Problem authenticating");
               })
               .finally(function() {

@@ -31,10 +31,10 @@
             if((event.url).indexOf(redirect_uri) === 0) {
               var requestToken = (event.url).split("code=")[1];
               $http({method: "post", headers: {'Content-Type': 'application/x-www-form-urlencoded', 'accept': 'application/json'}, url: "https://github.com/login/oauth/access_token", data: "client_id=" + clientId + "&client_secret=" + clientSecret + "&redirect_uri=" + redirect_uri + "&code=" + requestToken })
-                .success(function(data) {
+                .then(function(data) {
                   deferred.resolve(data);
                 })
-                .error(function(data, status) {
+                .catch(function(data, status) {
                   deferred.reject("Problem authenticating");
                 })
                 .finally(function() {

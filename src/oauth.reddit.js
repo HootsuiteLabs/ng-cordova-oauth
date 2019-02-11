@@ -33,10 +33,10 @@
               $http.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
               $http.defaults.headers.post.Authorization = 'Basic ' + btoa(clientId + ":" + clientSecret);
               $http({method: "post", url: "https://ssl.reddit.com/api/v1/access_token", data: "redirect_uri=" + redirect_uri + "&grant_type=authorization_code" + "&code=" + requestToken })
-                .success(function(data) {
+                .then(function(data) {
                   deferred.resolve(data);
                 })
-                .error(function(data, status) {
+                .catch(function(data, status) {
                   deferred.reject("Problem authenticating");
                 })
                 .finally(function() {

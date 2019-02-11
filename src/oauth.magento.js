@@ -33,7 +33,7 @@
             $http.defaults.headers.post.Authorization = signatureObj.authorization_header;
             $http.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
             $http({method: "post", url: baseUrl + "/oauth/initiate", data: "oauth_callback=http://localhost/callback" })
-            .success(function(requestTokenResult) {
+            .then(function(requestTokenResult) {
               var requestTokenParameters = (requestTokenResult).split("&");
               var parameterMap = {};
 
@@ -68,7 +68,7 @@
                   $http.defaults.headers.post.Authorization = signatureObj.authorization_header;
                   $http.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
                   $http({method: "post", url: baseUrl + "/oauth/token" })
-                  .success(function(result) {
+                  .then(function(result) {
                     var accessTokenParameters = result.split("&");
                     var parameterMap = {};
                     for(var i = 0; i < accessTokenParameters.length; i++) {
@@ -81,7 +81,7 @@
 
                     deferred.resolve(parameterMap);
                   })
-                  .error(function(error) {
+                  .catch(function(error) {
                     deferred.reject(error);
                   })
                   .finally(function() {
@@ -95,7 +95,7 @@
                 deferred.reject("The sign in flow was canceled");
               });
             })
-            .error(function(error) {
+            .catch(function(error) {
               deferred.reject(error);
             });
           } else {

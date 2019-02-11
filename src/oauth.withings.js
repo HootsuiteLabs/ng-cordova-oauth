@@ -32,7 +32,7 @@
             var requestTokenParameters = $cordovaOauthUtility.generateUrlParameters(oauthObject);
 
             $http({method: "get", url: requestTokenUrlBase + "?" + requestTokenParameters })
-              .success(function(requestTokenResult) {
+              .then(function(requestTokenResult) {
 
                 // Step 2 : End-user authorization
                 var parameterMap = $cordovaOauthUtility.parseResponseParameters(requestTokenResult);
@@ -71,14 +71,14 @@
                     var accessTokenParameters = $cordovaOauthUtility.generateUrlParameters(oauthObject);
 
                     $http({method: "get", url: accessTokenUrlBase + '?' + accessTokenParameters})
-                      .success(function(result) {
+                      .then(function(result) {
                         var parameterMap = $cordovaOauthUtility.parseResponseParameters(result);
                         if(!parameterMap.oauth_token_secret) {
                           deferred.reject("Oauth access token was not received");
                         }
                         deferred.resolve(parameterMap);
                       })
-                      .error(function(error) {
+                      .catch(function(error) {
                         deferred.reject(error);
                       })
                       .finally(function() {
@@ -92,7 +92,7 @@
                   deferred.reject("The sign in flow was canceled");
                 });
               })
-              .error(function(error) {
+              .catch(function(error) {
                   deferred.reject(error);
               });
           } else {
