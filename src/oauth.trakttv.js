@@ -32,10 +32,10 @@
               try {
                 var requestToken = (event.url).split("code=")[1].split("&")[0];
                 $http({method: "post", headers: {'Content-Type': 'application/json'}, url: "https://trakt.tv/oauth/token", data: {'code': requestToken, 'client_id': clientId, 'client_secret': clientSecret, 'redirect_uri': redirect_uri, 'grant_type': 'authorization_code'} })
-                  .success(function(data) {
+                  .then(function(data) {
                     deferred.resolve(data);
                   })
-                  .error(function(data, status) {
+                  .catch(function(data, status) {
                     deferred.reject("Problem authenticating");
                   })
                   .finally(function() {

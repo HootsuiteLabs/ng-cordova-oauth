@@ -73,7 +73,7 @@
                },
             };
 
-            $http(httpOptions).success(requestTokenSuccess).error(requestTokenError).finally(requestTokenFinally);
+            $http(httpOptions).then(requestTokenSuccess).catch(requestTokenError).finally(requestTokenFinally);
           } else {
             deferred.reject({error: "string_missmatch"});
           }

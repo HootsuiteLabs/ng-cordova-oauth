@@ -42,10 +42,10 @@
               var requestToken = (event.url).split("code=")[1];
               $http.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
               $http({method: "post", url: "https://api.weibo.com/oauth2/access_token", data: "client_id=" + clientId + "&client_secret=" + clientSecret + "&grant_type=authorization_code&code=" + requestToken + "&redirect_uri=" + redirect_uri})
-              .success(function(data) {
+              .then(function(data) {
                 deferred.resolve(data);
               })
-              .error(function(data, status) {
+              .catch(function(data, status) {
                 deferred.reject("Problem authenticating");
               })
               .finally(function() {

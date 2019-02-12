@@ -25,10 +25,10 @@
             if((event.url).indexOf('http://localhost/callback') === 0) {
               var requestToken = (event.url).split("code=")[1];
               $http({method: "post", headers: {'Content-Type': 'application/x-www-form-urlencoded'}, url: adfsServer + "/adfs/oauth2/token", data: "client_id=" + clientId + "&code=" + requestToken + "&redirect_uri=http://localhost/callback&grant_type=authorization_code"  })
-                .success(function(data) {
+                .then(function(data) {
                   deferred.resolve(data);
                 })
-                .error(function(data, status) {
+                .catch(function(data, status) {
                   deferred.reject("Problem authenticating");
                 })
                 .finally(function() {

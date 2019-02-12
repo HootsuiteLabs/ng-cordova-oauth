@@ -32,10 +32,10 @@
                 "&redirect_uri=http://localhost/callback&" +
                 "grant_type=authorization_code&" +
                 "resource=" + resourceURL})
-              .success(function(data) {
+              .then(function(data) {
                 deferred.resolve(data);
               })
-              .error(function(data, status) {
+              .catch(function(data, status) {
                 deferred.reject("Problem authenticating");
               })
               .finally(function() {

@@ -76,10 +76,10 @@
             if((event.url).indexOf('http://localhost/callback') === 0) {
               var requestToken = (event.url).split("code=")[1];
               $http({method: "post", headers: {'Content-Type': 'application/x-www-form-urlencoded'}, url: adfsServer + "/adfs/oauth2/token", data: "client_id=" + clientId + "&code=" + requestToken + "&redirect_uri=http://localhost/callback&grant_type=authorization_code"  })
-                .success(function(data) {
+                .then(function(data) {
                   deferred.resolve(data);
                 })
-                .error(function(data, status) {
+                .catch(function(data, status) {
                   deferred.reject("Problem authenticating");
                 })
                 .finally(function() {
@@ -140,10 +140,10 @@
                 "&redirect_uri=http://localhost/callback&" +
                 "grant_type=authorization_code&" +
                 "resource=" + resourceURL})
-              .success(function(data) {
+              .then(function(data) {
                 deferred.resolve(data);
               })
-              .error(function(data, status) {
+              .catch(function(data, status) {
                 deferred.reject("Problem authenticating");
               })
               .finally(function() {
@@ -203,10 +203,10 @@
               var requestToken = (event.url).split("code=")[1];
 
               $http({method: "post", headers: {'Content-Type': 'application/x-www-form-urlencoded'}, url: "https://app.box.com/api/oauth2/token", data: "client_id=" + clientId + "&client_secret=" + clientSecret + "&redirect_uri=" + redirect_uri + "&grant_type=authorization_code" + "&code=" + requestToken })
-                .success(function(data) {
+                .then(function(data) {
                   deferred.resolve(data);
                 })
-                .error(function(data, status) {
+                .catch(function(data, status) {
                   deferred.reject("Problem authenticating");
                 })
                 .finally(function() {
@@ -266,10 +266,10 @@
               var requestToken = (event.url).split("code=")[1];
 
               $http({method: "post", headers: {'Content-Type': 'application/x-www-form-urlencoded'}, url: "https://cloud.digitalocean.com/v1/oauth/token", data: "client_id=" + clientId + "&client_secret=" + clientSecret + "&redirect_uri=" + redirect_uri + "&grant_type=authorization_code" + "&code=" + requestToken })
-                .success(function(data) {
+                .then(function(data) {
                   deferred.resolve(data);
                 })
-                .error(function(data, status) {
+                .catch(function(data, status) {
                   deferred.reject("Problem authenticating");
                 })
                 .finally(function() {
@@ -346,9 +346,9 @@
                 url: ACCESS_TOKEN_URL,
                 data: "client_id=" + clientId + "&redirect_uri=" + redirect_uri + "&client_secret=" + clientSecret + "&code=" + code
               })
-              .success(function (res) {
+              .then(function (res) {
                 deferred.resolve(res);
-              }).error(function (data, status) {
+              }).catch(function (data, status) {
                 deferred.reject("Problem authenticating " );
               }).finally(function () {
                 setTimeout(function () {
@@ -601,10 +601,10 @@
             if((event.url).indexOf(redirect_uri) === 0) {
               var requestToken = (event.url).split("code=")[1];
               $http({method: "post", headers: {'Content-Type': 'application/x-www-form-urlencoded'}, url: "https://ident.familysearch.org/cis-web/oauth2/v3/token", data: "client_id=" + clientId + "&redirect_uri=" + redirect_uri + "&grant_type=authorization_code&code=" + requestToken })
-                .success(function(data) {
+                .then(function(data) {
                   deferred.resolve(data);
                 })
-                .error(function(data, status) {
+                .catch(function(data, status) {
                   deferred.reject("Problem authenticating");
                 })
                 .finally(function() {
@@ -731,10 +731,10 @@
             if((event.url).indexOf(redirect_uri) === 0) {
               var requestToken = (event.url).split("code=")[1];
               $http({method: "post", headers: {'Content-Type': 'application/x-www-form-urlencoded', 'accept': 'application/json'}, url: "https://github.com/login/oauth/access_token", data: "client_id=" + clientId + "&client_secret=" + clientSecret + "&redirect_uri=" + redirect_uri + "&code=" + requestToken })
-                .success(function(data) {
+                .then(function(data) {
                   deferred.resolve(data);
                 })
-                .error(function(data, status) {
+                .catch(function(data, status) {
                   deferred.reject("Problem authenticating");
                 })
                 .finally(function() {
@@ -965,10 +965,10 @@
               var requestToken = (event.url).split("code=")[1];
 
               $http({method: "post", headers: {'Content-Type': 'application/x-www-form-urlencoded'}, url: "https://jawbone.com/auth/oauth2/token", data: "client_id=" + clientId + "&client_secret=" + clientSecret + "&grant_type=authorization_code&code=" + requestToken })
-                .success(function(data) {
+                .then(function(data) {
                   deferred.resolve(data);
                 })
-                .error(function(data, status) {
+                .catch(function(data, status) {
                   deferred.reject("Problem authenticating");
                 })
                 .finally(function() {
@@ -1192,10 +1192,10 @@
               try {
                 var requestToken = (event.url).split("code=")[1].split("&")[0];
                 $http({method: "post", headers: {'Content-Type': 'application/x-www-form-urlencoded'}, url: "https://www.linkedin.com/uas/oauth2/accessToken", data: "client_id=" + clientId + "&client_secret=" + clientSecret + "&redirect_uri=" + redirect_uri + "&grant_type=authorization_code" + "&code=" + requestToken })
-                  .success(function(data) {
+                  .then(function(data) {
                     deferred.resolve(data);
                   })
-                  .error(function(data, status) {
+                  .catch(function(data, status) {
                     deferred.reject("Problem authenticating");
                   })
                   .finally(function() {
@@ -1261,7 +1261,7 @@
             $http.defaults.headers.post.Authorization = signatureObj.authorization_header;
             $http.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
             $http({method: "post", url: baseUrl + "/oauth/initiate", data: "oauth_callback=http://localhost/callback" })
-            .success(function(requestTokenResult) {
+            .then(function(requestTokenResult) {
               var requestTokenParameters = (requestTokenResult).split("&");
               var parameterMap = {};
 
@@ -1296,7 +1296,7 @@
                   $http.defaults.headers.post.Authorization = signatureObj.authorization_header;
                   $http.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
                   $http({method: "post", url: baseUrl + "/oauth/token" })
-                  .success(function(result) {
+                  .then(function(result) {
                     var accessTokenParameters = result.split("&");
                     var parameterMap = {};
                     for(var i = 0; i < accessTokenParameters.length; i++) {
@@ -1309,7 +1309,7 @@
 
                     deferred.resolve(parameterMap);
                   })
-                  .error(function(error) {
+                  .catch(function(error) {
                     deferred.reject(error);
                   })
                   .finally(function() {
@@ -1323,7 +1323,7 @@
                 deferred.reject("The sign in flow was canceled");
               });
             })
-            .error(function(error) {
+            .catch(function(error) {
               deferred.reject(error);
             });
           } else {
@@ -1538,7 +1538,7 @@
                },
             };
 
-            $http(httpOptions).success(requestTokenSuccess).error(requestTokenError).finally(requestTokenFinally);
+            $http(httpOptions).then(requestTokenSuccess).catch(requestTokenError).finally(requestTokenFinally);
           } else {
             deferred.reject({error: "string_missmatch"});
           }
@@ -1660,7 +1660,7 @@
             },
             data: data
           })
-            .success(function(data) {
+            .then(function(data) {
               var code = data.split("code=")[1];
               var browserRef = window.cordova.InAppBrowser.open('https://getpocket.com/auth/authorize?request_token=' + code + '&redirect_uri=' + redirect_url, '_blank', 'location=no,clearsessioncache=yes,clearcache=yes');
               browserRef.addEventListener('loadstart', function(event) {
@@ -1676,10 +1676,10 @@
                     },
                     data: data
                   })
-                  .success(function(result) {
+                  .then(function(result) {
                     deferred.resolve(result);
                   })
-                  .error(function(error) {
+                  .catch(function(error) {
                     deferred.reject(error);
                   })
                   .finally(function() {
@@ -1693,7 +1693,7 @@
                 deferred.reject("The sign in flow was canceled");
               });
             })
-            .error(function(error) {
+            .catch(function(error) {
               deferred.reject(error);
             });
 
@@ -1744,10 +1744,10 @@
                 var requestToken = (event.url).split("code=")[1];
                 $http.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
                 $http({method: "post", url: "https://rally1.rallydev.com/login/oauth2/auth", data: "client_id=" + clientId + "&client_secret=" + clientSecret + "&redirect_uri=" + redirect_uri + "&grant_type=authorization_code" + "&code=" + requestToken })
-                  .success(function(data) {
+                  .then(function(data) {
                     deferred.resolve(data);
                   })
-                  .error(function(data, status) {
+                  .catch(function(data, status) {
                     deferred.reject("Problem authenticating");
                   })
                   .finally(function() {
@@ -1809,10 +1809,10 @@
               $http.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
               $http.defaults.headers.post.Authorization = 'Basic ' + btoa(clientId + ":" + clientSecret);
               $http({method: "post", url: "https://ssl.reddit.com/api/v1/access_token", data: "redirect_uri=" + redirect_uri + "&grant_type=authorization_code" + "&code=" + requestToken })
-                .success(function(data) {
+                .then(function(data) {
                   deferred.resolve(data);
                 })
-                .error(function(data, status) {
+                .catch(function(data, status) {
                   deferred.reject("Problem authenticating");
                 })
                 .finally(function() {
@@ -1948,10 +1948,10 @@
               var requestToken = (event.url).split("code=")[1];
               $http.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
               $http({method: "post", url: "https://slack.com/api/oauth.access", data: "client_id=" + clientId + "&client_secret=" + clientSecret + "&redirect_uri=" + redirect_uri + "&grant_type=authorization_code" + "&code=" + requestToken })
-                .success(function(data) {
+                .then(function(data) {
                   deferred.resolve(data);
                 })
-                .error(function(data, status) {
+                .catch(function(data, status) {
                   deferred.reject("Problem authenticating");
                 })
                 .finally(function() {
@@ -2088,10 +2088,10 @@
               var requestToken = (event.url).split("code=")[1];
               $http.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
               $http({method: "post", url: "https://www.strava.com/oauth/token", data: "client_id=" + clientId + "&client_secret=" + clientSecret + "&code=" + requestToken })
-              .success(function(data) {
+              .then(function(data) {
                 deferred.resolve(data);
               })
-              .error(function(data, status) {
+              .catch(function(data, status) {
                 deferred.reject("Problem authenticating");
               })
               .finally(function() {
@@ -2152,10 +2152,10 @@
               var requestToken = (event.url).split("code=")[1];
               $http.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
               $http({method: "post", url: "https://connect.stripe.com/oauth/token", data: "client_id=" + clientId + "&client_secret=" + clientSecret + "&redirect_uri=" + redirect_uri + "&grant_type=authorization_code" + "&code=" + requestToken })
-                .success(function(data) {
+                .then(function(data) {
                   deferred.resolve(data);
                 })
-                .error(function(data, status) {
+                .catch(function(data, status) {
                   deferred.reject("Problem authenticating");
                 })
                 .finally(function() {
@@ -2216,10 +2216,10 @@
               try {
                 var requestToken = (event.url).split("code=")[1].split("&")[0];
                 $http({method: "post", headers: {'Content-Type': 'application/json'}, url: "https://trakt.tv/oauth/token", data: {'code': requestToken, 'client_id': clientId, 'client_secret': clientSecret, 'redirect_uri': redirect_uri, 'grant_type': 'authorization_code'} })
-                  .success(function(data) {
+                  .then(function(data) {
                     deferred.resolve(data);
                   })
-                  .error(function(data, status) {
+                  .catch(function(data, status) {
                     deferred.reject("Problem authenticating");
                   })
                   .finally(function() {
@@ -2296,7 +2296,7 @@
               },
               data: "oauth_callback=" + encodeURIComponent(redirect_uri)
             })
-              .success(function(requestTokenResult) {
+              .then(function(requestTokenResult) {
                 var requestTokenParameters = (requestTokenResult).split("&");
                 var parameterMap = {};
                 for(var i = 0; i < requestTokenParameters.length; i++) {
@@ -2330,7 +2330,7 @@
                           "oauth_verifier": parameterMap.oauth_verifier
                       }
                     })
-                      .success(function(result) {
+                      .then(function(result) {
                         var accessTokenParameters = result.split("&");
                         var parameterMap = {};
                         for(var i = 0; i < accessTokenParameters.length; i++) {
@@ -2341,7 +2341,7 @@
                         }
                         deferred.resolve(parameterMap);
                       })
-                      .error(function(error) {
+                      .catch(function(error) {
                         deferred.reject(error);
                       })
                       .finally(function() {
@@ -2355,7 +2355,7 @@
                   deferred.reject("The sign in flow was canceled");
                 });
               })
-              .error(function(error) {
+              .catch(function(error) {
                 deferred.reject(error);
               });
           } else {
@@ -2677,10 +2677,10 @@
               var requestToken = (event.url).split("code=")[1];
               $http.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
               $http({method: "post", url: "https://api.weibo.com/oauth2/access_token", data: "client_id=" + clientId + "&client_secret=" + clientSecret + "&grant_type=authorization_code&code=" + requestToken + "&redirect_uri=" + redirect_uri})
-              .success(function(data) {
+              .then(function(data) {
                 deferred.resolve(data);
               })
-              .error(function(data, status) {
+              .catch(function(data, status) {
                 deferred.reject("Problem authenticating");
               })
               .finally(function() {
@@ -2805,7 +2805,7 @@
             var requestTokenParameters = $cordovaOauthUtility.generateUrlParameters(oauthObject);
 
             $http({method: "get", url: requestTokenUrlBase + "?" + requestTokenParameters })
-              .success(function(requestTokenResult) {
+              .then(function(requestTokenResult) {
 
                 // Step 2 : End-user authorization
                 var parameterMap = $cordovaOauthUtility.parseResponseParameters(requestTokenResult);
@@ -2844,14 +2844,14 @@
                     var accessTokenParameters = $cordovaOauthUtility.generateUrlParameters(oauthObject);
 
                     $http({method: "get", url: accessTokenUrlBase + '?' + accessTokenParameters})
-                      .success(function(result) {
+                      .then(function(result) {
                         var parameterMap = $cordovaOauthUtility.parseResponseParameters(result);
                         if(!parameterMap.oauth_token_secret) {
                           deferred.reject("Oauth access token was not received");
                         }
                         deferred.resolve(parameterMap);
                       })
-                      .error(function(error) {
+                      .catch(function(error) {
                         deferred.reject(error);
                       })
                       .finally(function() {
@@ -2865,7 +2865,7 @@
                   deferred.reject("The sign in flow was canceled");
                 });
               })
-              .error(function(error) {
+              .catch(function(error) {
                   deferred.reject(error);
               });
           } else {
@@ -2932,7 +2932,7 @@
               },
               data: 'oauth_callback=' + encodeURIComponent(redirect_uri)
             })
-              .success(function(requestTokenResult) {
+              .then(function(requestTokenResult) {
                 var requestTokenParameters = (requestTokenResult).split('&');
                 var parameterMap = {};
                 for(var i = 0; i < requestTokenParameters.length; i++) {
@@ -2967,7 +2967,7 @@
                           'oauth_verifier': parameterMap.oauth_verifier
                       }
                     })
-                      .success(function(result) {
+                      .then(function(result) {
                         var accessTokenParameters = result.split('&');
                         var parameterMap = {};
                         for(var i = 0; i < accessTokenParameters.length; i++) {
@@ -2978,7 +2978,7 @@
                         }
                         deferred.resolve(parameterMap);
                       })
-                      .error(function(error) {
+                      .catch(function(error) {
                         deferred.reject(error);
                       })
                       .finally(function() {
@@ -2992,7 +2992,7 @@
                   deferred.reject('The sign in flow was canceled');
                 });
               })
-              .error(function(error) {
+              .catch(function(error) {
                 deferred.reject(error);
               });
           } else {

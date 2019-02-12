@@ -44,7 +44,7 @@
               },
               data: "oauth_callback=" + encodeURIComponent(redirect_uri)
             })
-              .success(function(requestTokenResult) {
+              .then(function(requestTokenResult) {
                 var requestTokenParameters = (requestTokenResult).split("&");
                 var parameterMap = {};
                 for(var i = 0; i < requestTokenParameters.length; i++) {
@@ -78,7 +78,7 @@
                           "oauth_verifier": parameterMap.oauth_verifier
                       }
                     })
-                      .success(function(result) {
+                      .then(function(result) {
                         var accessTokenParameters = result.split("&");
                         var parameterMap = {};
                         for(var i = 0; i < accessTokenParameters.length; i++) {
@@ -89,7 +89,7 @@
                         }
                         deferred.resolve(parameterMap);
                       })
-                      .error(function(error) {
+                      .catch(function(error) {
                         deferred.reject(error);
                       })
                       .finally(function() {
@@ -103,7 +103,7 @@
                   deferred.reject("The sign in flow was canceled");
                 });
               })
-              .error(function(error) {
+              .catch(function(error) {
                 deferred.reject(error);
               });
           } else {

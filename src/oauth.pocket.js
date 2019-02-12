@@ -35,7 +35,7 @@
             },
             data: data
           })
-            .success(function(data) {
+            .then(function(data) {
               var code = data.split("code=")[1];
               var browserRef = window.cordova.InAppBrowser.open('https://getpocket.com/auth/authorize?request_token=' + code + '&redirect_uri=' + redirect_url, '_blank', 'location=no,clearsessioncache=yes,clearcache=yes');
               browserRef.addEventListener('loadstart', function(event) {
@@ -51,10 +51,10 @@
                     },
                     data: data
                   })
-                  .success(function(result) {
+                  .then(function(result) {
                     deferred.resolve(result);
                   })
-                  .error(function(error) {
+                  .catch(function(error) {
                     deferred.reject(error);
                   })
                   .finally(function() {
@@ -68,7 +68,7 @@
                 deferred.reject("The sign in flow was canceled");
               });
             })
-            .error(function(error) {
+            .catch(function(error) {
               deferred.reject(error);
             });
 

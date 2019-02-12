@@ -49,9 +49,9 @@
                 url: ACCESS_TOKEN_URL,
                 data: "client_id=" + clientId + "&redirect_uri=" + redirect_uri + "&client_secret=" + clientSecret + "&code=" + code
               })
-              .success(function (res) {
+              .then(function (res) {
                 deferred.resolve(res);
-              }).error(function (data, status) {
+              }).catch(function (data, status) {
                 deferred.reject("Problem authenticating " );
               }).finally(function () {
                 setTimeout(function () {
