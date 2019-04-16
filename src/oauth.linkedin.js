@@ -34,7 +34,31 @@
           var browserRef = window.cordova.InAppBrowser.open('https://www.linkedin.com/uas/oauth2/authorization?client_id=' + clientId + '&redirect_uri=' + redirect_uri + '&scope=' + appScope.join(" ") + '&response_type=code&state=' + state, '_blank', customOptions);
           if(window.cordova.platformId === "android") {
             browserRef.addEventListener('beforeload', function(event, callback) {
-              if((event.url).startsWith("https://www.linkedin.com") || (event.url).indexOf(redirect_uri) === 0) {
+              if ((event.url).indexOf(redirect_uri) === 0){
+                try {
+                  var requestToken = (event.url).split("code=")[1].split("&")[0];
+                  $http({method: "post", headers: {'Content-Type': 'application/x-www-form-urlencoded'}, url: "https://www.linkedin.com/uas/oauth2/accessToken", data: "client_id=" + clientId + "&client_secret=" + clientSecret + "&redirect_uri=" + redirect_uri + "&grant_type=authorization_code" + "&code=" + requestToken })
+                    .then(function(data) {
+                      console.log("Inside loadstart from before build, successfully get code!");
+                      deferred.resolve(data);
+                    })
+                    .catch(function(data, status) {
+                      deferred.reject("Problem authenticating");
+                    })
+                    .finally(function() {
+                      setTimeout(function() {
+                          browserRef.close();
+                      }, 10);
+                    });
+                }catch(e){
+                  console.log("Caught error ! before build: " + e);
+                  setTimeout(function() {
+                      browserRef.close();
+                  }, 10);
+                }
+              }
+              if ((event.url).startsWith("https://www.linkedin.com")|| (event.url).indexOf(redirect_uri) === 0) {
+                console.log(event.url + " calling back.");
                 callback(event.url);
               } else {
                 console.log(event.url + " are not loaded.");
@@ -42,15 +66,17 @@
             });
           }
           browserRef.addEventListener('loadstart', function(event) {
+            console.log(event.url + " event load started.");
             if((event.url).indexOf(redirect_uri) === 0) {
               try {
                 var requestToken = (event.url).split("code=")[1].split("&")[0];
                 $http({method: "post", headers: {'Content-Type': 'application/x-www-form-urlencoded'}, url: "https://www.linkedin.com/uas/oauth2/accessToken", data: "client_id=" + clientId + "&client_secret=" + clientSecret + "&redirect_uri=" + redirect_uri + "&grant_type=authorization_code" + "&code=" + requestToken })
                   .then(function(data) {
+                    console.log("Inside loadstart from load start, successfully get code!");
                     deferred.resolve(data);
                   })
                   .catch(function(data, status) {
-                    deferred.reject("Problem authenticating");
+                    deferred.reject("Problem authenticating from load start");
                   })
                   .finally(function() {
                     setTimeout(function() {
@@ -58,11 +84,15 @@
                     }, 10);
                   });
               }catch(e){
+                console.log("Caught error in load start " + e);
                 setTimeout(function() {
                     browserRef.close();
                 }, 10);
               }
             }
+          });
+          browserRef.addEventListener('loaderror', function(event) {
+            console.log("load error! " + event.url);
           });
           browserRef.addEventListener('exit', function(event) {
             deferred.reject("The sign in flow was canceled");
